@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: readingservice
+    
+management:
+  health:
+    circuitbreakers:
+      enabled : true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always     
+      
+resilience4j:
+  circuitbreaker:
+    instances:
+      reading-service:
+        registerHealthIndicator: true
+        minimum-number-of-calls: 4                                                                       
+        failureRateThreshold: 50
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 4
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED   
